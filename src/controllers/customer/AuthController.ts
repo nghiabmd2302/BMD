@@ -7,10 +7,11 @@ import {
   Res,
   UseBefore,
   HeaderParams,
+  UseAuth
 } from "@tsed/common";
 import { generateToken } from "../../utils/jwt";
 import { Customer } from "../../entities/CustomerEntity";
-import { CustomAuthMiddleware } from "../../middlewares/auth";
+import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import {
   CustomerInsert,
   CustomerPassword,
@@ -19,7 +20,6 @@ import {
 import { comparePassword, hashPassword } from "../../utils/password.utils";
 import { Docs } from "@tsed/swagger";
 import { Request } from "express";
-import { UseAuth } from "@tsed/platform-middlewares";
 import { Responses } from "../../services/responseService/ResponseService";
 import {Response} from "express"
 import { Error } from "../../services/errorService/ErrorService";
@@ -30,7 +30,6 @@ export interface CustomerInfo {
 }
 
 @Controller("/auth")
-@UseAuth(CustomAuthMiddleware, { role: "customer" })
 @Docs("/docs_customer")
 export class AuthController {
   @Post("/signup")
@@ -62,7 +61,7 @@ export class AuthController {
   }
 
   @Get("/profile")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async profile(
     @HeaderParams("token") token: string,
     @Req() request: Request,
@@ -72,11 +71,11 @@ export class AuthController {
     // @ts-ignore
     const customerId = request.user.id;
     const customerData = await Customer.findQuery({ where: { id: customerId } });
-    return Responses.resOk(res, customerData);
+    return Responses.sendOK(res, customerData);
   }
 
   @Post("/profile/update")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async update(
     @BodyParams("customer") customer: CustomerInsert,
     @HeaderParams("token") token: string,
@@ -90,11 +89,11 @@ export class AuthController {
     });
     const password = await hashPassword(customerData.password)
     await Customer.updateCondition({id: customerId}, {...customer, password})
-    return Responses.resOk(res, {});
+    return Responses.sendOK(res, {});
   }
 
   @Post("/profile/password/update")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async passwordUpdate(
     @BodyParams() customer: CustomerPassword,
     @HeaderParams("token") token: string,
@@ -116,6 +115,6 @@ export class AuthController {
 
     let password = await hashPassword(customer.newPassword);
     await Customer.updateCondition({id: customerId}, {password})
-    return Responses.resOk(res, {});
+    return Responses.sendOK(res, {});
   }
 }

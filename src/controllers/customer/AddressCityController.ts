@@ -4,28 +4,27 @@ import {
   UseBefore,
   HeaderParams,
   QueryParams,
-  Res
+  Res,
+  UseAuth
 } from "@tsed/common";
-import { CustomAuthMiddleware } from "../../middlewares/auth";
+import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { QueryParamsModel } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
-import { UseAuth } from "@tsed/platform-middlewares";
 import { Responses } from "../../services/responseService/ResponseService";
 import {Response} from "express"
 import { addressCityService } from "../../services/commonService/AddressCityService";
 
 @Controller("/addressCity")
 @Docs("/docs_customer")
-@UseAuth(CustomAuthMiddleware, { role: "customer" })
 export class AddressCityController {
   @Get("/")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async get(
     @HeaderParams("token") token: string,
     @QueryParams() query: QueryParamsModel,
     @Res() res: Response
   ) {
     const addressCityData = await addressCityService.getQuery(query)
-    return Responses.resCount(res, addressCityData);
+    return Responses.sendOK(res, addressCityData);
   }
 }

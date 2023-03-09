@@ -8,34 +8,33 @@ import {
   QueryParams,
   PathParams,
   Res,
+  UseAuth
 } from "@tsed/common";
-import { CustomAuthMiddleware } from "../../middlewares/auth";
+import { VerificationJWT } from "../../middlewares/auth";
 import { AddressCity } from "../../entities/AddressCityEntity";
 import { AddressCityInsert } from "../../models/AddressCityCreation";
 import { QueryParamsModel } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
-import { UseAuth } from "@tsed/platform-middlewares";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express";
 import { addressCityService } from "../../services/commonService/AddressCityService";
 
 @Controller("/addressCity")
 @Docs("/docs_admin")
-@UseAuth(CustomAuthMiddleware, { role: "admin" })
 export class AddressCityController {
   @Get("/")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async get(
     @HeaderParams("token") token: string,
     @QueryParams() query: QueryParamsModel,
     @Res() res: Response
   ) {
     const addressCityData = await addressCityService.getQuery(query)
-    return Responses.resOk(res, addressCityData);
+    return Responses.sendOK(res, addressCityData);
   }
 
   @Post("/:addressCityId/update")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async update(
     @BodyParams("addressCity") addressCityData: AddressCityInsert,
     @HeaderParams("token") token: String,
@@ -46,6 +45,6 @@ export class AddressCityController {
       { id: addressCityId },
       { ...addressCityData }
     );
-    return Responses.resOk(res, {});
+    return Responses.sendOK(res, {});
   }
 }

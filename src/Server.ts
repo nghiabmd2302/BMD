@@ -5,6 +5,7 @@ import "@tsed/platform-express";
 import "@tsed/swagger";
 import "@tsed/typeorm";
 import "@tsed/ajv"; // import ajv ts.ed module
+import "reflect-metadata";
 import * as bodyParser from "body-parser";
 import * as compress from "compression";
 import * as cookieParser from "cookie-parser";
@@ -14,6 +15,7 @@ import * as methodOverride from "method-override";
 import errorMidlleware from "./middlewares/errorMidlleware";
 const express = require("express");
 import User from "./entities/StaffEntity";
+import { fileFilter, storage, upload } from "./utils/upload";
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -48,6 +50,12 @@ export const rootDir = __dirname;
   // ],
   passport: {
     userInfoModel: User,
+  },
+  multer: {
+    dest: process.env.DEST_STATIC,
+    storage: storage,
+    fileFilter: fileFilter
+    // see multer options
   },
   typeorm: [
     {
@@ -102,7 +110,7 @@ export class Server {
       .use(methodOverride())
       .use(bodyParser.json())
       .use(express.json())
-      .use('/media', express.static('media'))
+      .use("/media", express.static("media"))
       .use(
         bodyParser.urlencoded({
           extended: true,
@@ -127,8 +135,6 @@ export class Server {
   }
 
   $afterRoutesInit() {
-    this.app
-      .use(GlobalAcceptMimesMiddleware)
-      .use(errorMidlleware);
+    this.app.use(GlobalAcceptMimesMiddleware).use(errorMidlleware);
   }
 }

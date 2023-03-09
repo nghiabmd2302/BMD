@@ -7,37 +7,36 @@ import {
   HeaderParams,
   PathParams,
   Res,
-  QueryParams
+  QueryParams,
+  UseAuth
 } from "@tsed/common";
-import { CustomAuthMiddleware } from "../../middlewares/auth";
+import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { Customer } from "../../entities/CustomerEntity";
 import { CustomerInsert, CustomerUpdate } from "../../models/CustomerCreation";
 import { hashPassword } from "../../utils/password.utils";
 import { Docs } from "@tsed/swagger";
-import { UseAuth } from "@tsed/platform-middlewares";
 import { Response} from "express"
 import { Responses } from "../../services/responseService/ResponseService";
 import { QueryParamsModelCustomerSearch } from "../../models/queryParamsModel";
 import { customerService } from "../../services/adminService/CustomerService";
 
 @Controller("/customer")
-@UseAuth(CustomAuthMiddleware, { role: "admin" })
 @Docs("/docs_admin")
 export class CustomerController {
 
   @Get("/")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async get(
     @QueryParams() query: QueryParamsModelCustomerSearch,
     @HeaderParams("token") token: string,
     @Res() res: Response
   ) {
     const data = await customerService.getQuery(query)
-    return Responses.resCount(res, data)
+    return Responses.sendOK(res, data)
   }
 
   @Post("/")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async create(
     @BodyParams("customer") customerData: CustomerInsert,
     @BodyParams("classroomId") classroomId: number,
@@ -45,22 +44,22 @@ export class CustomerController {
     @Res() res: Response
   ) {
     const data = await Customer.save({...customerData, classroom: classroomId})
-    return Responses.resOk(res, data)
+    return Responses.sendOK(res, data)
   }
 
   @Get("/:customerId")
-  @UseAuth(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async getByID(
     @HeaderParams("token") token: string,
     @PathParams("customerId") customerId: string,
     @Res() res: Response
   ) {
     const data = await Customer.findQuery({id: customerId})
-    return Responses.resOk(res, data)
+    return Responses.sendOK(res, data)
   }
 
   @Post("/:customerId/update")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async update(
     @BodyParams("customer") customerData: CustomerUpdate,
     @HeaderParams("token") token: string,
@@ -69,11 +68,11 @@ export class CustomerController {
     @Res() res: Response
   ) {
     await Customer.updateCondition({id: customerId}, customerData)
-    return Responses.resOk(res, {})
+    return Responses.sendOK(res, {})
   }
 
   @Post("/:customerId/update/password")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async updatePassword(
     @HeaderParams("token") token: string,
     @PathParams("customerId") customerId: string,
@@ -82,28 +81,28 @@ export class CustomerController {
   ) {
     let newPassword = await hashPassword(password)
     await Customer.updateCondition({id: customerId}, {password: newPassword})
-    return Responses.resOk(res, {})
+    return Responses.sendOK(res, {})
   }
 
   @Post("/:customerId/delete")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async delete(
     @HeaderParams("token") token: string,
     @PathParams("customerId") customerId: string,
     @Res() res: Response
   ) {
     await Customer.updateCondition({id: customerId}, {isDeleted: true})
-    return Responses.resOk(res, {})
+    return Responses.sendOK(res, {})
   }
 
   @Post("/:customerId/restore")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async restore(
     @HeaderParams("token") token: string,
     @PathParams("customerId") customerId: string,
     @Res() res: Response
   ) {
     await Customer.updateCondition({id: customerId}, {isDeleted: false})
-    return Responses.resOk(res, {})
+    return Responses.sendOK(res, {})
   }
 }

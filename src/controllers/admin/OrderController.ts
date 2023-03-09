@@ -8,35 +8,34 @@ import {
   QueryParams,
   PathParams,
   Res,
+  UseAuth
 } from "@tsed/common";
-import { CustomAuthMiddleware } from "../../middlewares/auth";
+import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { OrderInsert } from "../../models/OrderCreation";
 import { Order } from "../../entities/OrderEntity";
 import { QueryParamsModelOrderSearch } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
-import { UseAuth } from "@tsed/platform-middlewares";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express";
 import { orderService } from "../../services/adminService/OrderService";
 import { OrderDetailInsert } from "../../models/OrderDetailCreation";
 
 @Controller("/order")
-@UseAuth(CustomAuthMiddleware, { role: "admin" })
 @Docs("/docs_admin")
 export class OrderController {
   @Get("/")
-  @UseBefore(CustomAuthMiddleware, { role: "admin" })
+  @UseAuth(VerificationJWT)
   async get(
     @HeaderParams("token") token: string,
     @QueryParams() query: QueryParamsModelOrderSearch,
     @Res() res: Response
   ) {
     const OrderData: Order[] = await orderService.getQuery(query);
-    return Responses.resCount(res, OrderData);
+    return Responses.sendOK(res, OrderData);
   }
 
   @Post("/:orderId/update")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async update(
     @HeaderParams("token") token: string,
     @BodyParams("order") orderData: OrderInsert,
@@ -46,11 +45,11 @@ export class OrderController {
   ) {
     const data = await Order.findOne({where: {id: orderId}, relations: ["details"]})
     const newData = await Order.save({...data, ...orderData, details})
-    return Responses.resOk(res, newData);
+    return Responses.sendOK(res, newData);
   }
 
   @Post("/:orderId/status/update")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(CustomAuthMiddleware, { role: "customer" })
   async updateStatus(
     @HeaderParams("token") token: string,
     @BodyParams("status") status: string,
@@ -58,6 +57,6 @@ export class OrderController {
     @Res() res: Response
   ) {
     await Order.updateCondition({id: orderId}, {status})
-    return Responses.resOk(res, {});
+    return Responses.sendOK(res, {});
   }
 }

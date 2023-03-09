@@ -30,12 +30,16 @@ export abstract class Core extends BaseEntity {
   createTimestamp() {
     const date = new Date();
     const milliseconds: number = date.getTime();
-    this.updatedAt = milliseconds
+    this.updatedAt = milliseconds;
     this.createdAt = milliseconds;
   }
 
 
   static save(options?: any): Promise<any> {
+    const date = new Date();
+    const milliseconds: number = date.getTime();
+    options.updatedAt = milliseconds;
+    options.createdAt = milliseconds;
     return super.save(options);
   }
 

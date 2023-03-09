@@ -8,11 +8,11 @@ import {
   QueryParams,
   Get,
   PathParams,
-  Req
+  Req,
+  UseAuth
 } from "@tsed/common";
-import { CustomAuthMiddleware } from "../../middlewares/auth";
+import { VerificationJWT } from "../../middlewares/auth";
 import { Docs } from "@tsed/swagger";
-import { UseAuth } from "@tsed/platform-middlewares";
 import { OrderInsert } from "../../models/OrderCreation";
 import { OrderDetailInsert } from "../../models/OrderDetailCreation";
 import { Order } from "../../entities/OrderEntity";
@@ -22,12 +22,11 @@ import { orderService } from "../../services/customerService/OrderService";
 import { QueryParamsModelLessSearch } from "../../models/queryParamsModel";
 
 @Controller("/order")
-@UseAuth(CustomAuthMiddleware, { role: "customer" })
 @Docs("/docs_customer")
 export class OrderController {
 
   @Get("/")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async get(
     @HeaderParams("token") token: string,
     @QueryParams() query: QueryParamsModelLessSearch,
@@ -35,11 +34,11 @@ export class OrderController {
     @Res() res: Response
   ) {
     const data = await orderService.getQuery(query, code)
-    return Responses.resOk(res, data);
+    return Responses.sendOK(res, data);
   }
 
   @Post("/")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async create(
     @HeaderParams("token") token: string,
     @BodyParams("order") orderData: OrderInsert,
@@ -53,11 +52,11 @@ export class OrderController {
     @Res() res: Response
   ) {
     const data = await orderService.addNewOrder(orderData, details, promotionCode, addressCity, addressDistrict, addressWard, customer, expoToken)
-    return Responses.resOk(res, data);
+    return Responses.sendOK(res, data);
   }
 
   @Post("/:orderId/cancel")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async cancel(
     @HeaderParams("token") token: string,
     @PathParams("orderId") orderId: number,
@@ -65,12 +64,12 @@ export class OrderController {
     
   ) {
     await Order.updateCondition({id: orderId}, {status: "CANCEL"})
-    return Responses.resOk(res, {});
+    return Responses.sendOK(res, {});
   }
 
   
   @Post("/estimate")
-  @UseBefore(CustomAuthMiddleware, { role: "customer" })
+  @UseAuth(VerificationJWT)
   async estimate(
     @HeaderParams("token") token: string,
     @BodyParams("order") orderData: OrderInsert,
@@ -85,7 +84,7 @@ export class OrderController {
     // @ts-ignore
     const customer = request.user.id;
     const data = await orderService.addNewOrder(orderData, details, promotionCode, addressCity, addressDistrict, addressWard, customer)
-    return Responses.resOk(res, data);
+    return Responses.sendOK(res, data);
   }
   
 }
