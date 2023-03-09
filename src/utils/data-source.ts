@@ -20,6 +20,11 @@ import { Order } from "../entities/OrderEntity";
 import { OrderDetail } from "../entities/OrderDetailEntity";
 import { CoreEntity } from "../entities/TestEntity";
 import { Promotion } from "../entities/PromotionEntity";
+import { News } from "../entities/NewsEntity";
+import { Notification } from "../entities/NotificationEntity";
+import { Permission } from "../entities/PermissionEntity";
+import { Division } from "../entities/DivisionEntity";
+import { Media } from "../entities/MediaEntity";
 
 
 const AppDataSource = new DataSource({
@@ -54,7 +59,12 @@ const AppDataSource = new DataSource({
     Order,
     OrderDetail,
     CoreEntity,
-    Promotion
+    Promotion,
+    News,
+    Notification,
+    Permission,
+    Division,
+    Media
   ],
 });
 
