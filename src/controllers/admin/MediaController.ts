@@ -11,7 +11,7 @@ import {
   Req,
   UseAuth
 } from "@tsed/common";
-import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
+import { VerificationJWT } from "../../middlewares/auth";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response, Request } from "express";
@@ -19,9 +19,9 @@ import { MediaInsert } from "../../models/MediaCreation";
 import { Media } from "../../entities/MediaEntity";
 import { QueryParamsModel } from "../../models/queryParamsModel";
 import { mediaService } from "../../services/adminService/MediaService";
-import { upload } from "../../utils/upload";
 import { MultipartFile } from "@tsed/multipartfiles";
 import { Error } from "../../services/errorService/ErrorService";
+import { In } from "typeorm";
 
 @Controller("/media")
 @Docs("/docs_admin")
@@ -48,28 +48,41 @@ export class MediaController {
     return Responses.sendOK(res, data);
   }
 
-  // @Post("/:gradeId/update")
-//   @UseAuth(VerificationJWT)
-  // async update(
-  //   @BodyParams("grade") gradeData: GradeInsert,
-  //   @HeaderParams("token") token: String,
-  //   @PathParams("gradeId") gradeId: number,
-  //   @Res() res: Response
-  // ) {
-  //   await Grade.updateCondition({id: gradeId}, gradeData)
-  //   return Responses.resOk(res, {});
-  // }
+  @Post("/:mediaId/update")
+  @UseAuth(VerificationJWT)
+  async update(
+    @HeaderParams("token") token: String,
+    @BodyParams("media") mediaData: MediaInsert,
+    @PathParams("mediaId") mediaId: number,
+    @Res() res: Response
+  ) {
+    await Media.updateCondition({id: mediaId}, mediaData)
+    return Responses.sendOK(res, {});
+  }
 
-  // @Post("/:gradeId/delete")
-//   @UseAuth(VerificationJWT)
-  // async delete(
-  //   @HeaderParams("token") token: String,
-  //   @PathParams("gradeId") gradeId: number,
-  //   @Res() res: Response
-  // ) {
-  //   await Grade.updateCondition({id: gradeId}, {idDeleted: true})
-  //   return Responses.resOk(res, {});
-  // }
+  @Post("/:mediaId/delete")
+  @UseAuth(VerificationJWT)
+  async delete(
+    @HeaderParams("token") token: String,
+    @PathParams("mediaId") mediaId: number,
+    @Res() res: Response
+  ) {
+    await Media.updateCondition({id: mediaId}, {isDeleted: true})
+    return Responses.sendOK(res, {});
+  }
+
+
+  @Post("/delete")
+  @UseAuth(VerificationJWT)
+  async deleteIds(
+    @HeaderParams("token") token: String,
+    @BodyParams("mediaIds", Number) mediaIds: Number[],
+    @Res() res: Response
+  ) {
+    await Media.updateCondition({id: In(mediaIds)}, {isDeleted: true})
+    return Responses.sendOK(res, {});
+  }
+  
 
   @Post("/upload")
   @UseAuth(VerificationJWT)
@@ -79,23 +92,6 @@ export class MediaController {
     @Req() req: Request,
     @Res() res: Response
   ) {
-
-    //@ts-ignore
-    const image = file;
-
-    if (!image) {
-      return Error.badRequest("Không có ảnh được cung cấp!", {});
-    }
-
-    Responses.sendOK(res, {
-      fieldname: image.fieldname,
-      originalname: image.originalname,
-      encoding: image.encoding,
-      mimetype: image.mimetype,
-      filename: image.filename,
-      path: image.path,
-      destination: image.destination,
-      size: image.size,
-    });
+    await mediaService.upload(res, file)
   }
 }

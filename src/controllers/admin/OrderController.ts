@@ -43,9 +43,8 @@ export class OrderController {
     @BodyParams("details", OrderDetailInsert) details: OrderDetailInsert[],
     @Res() res: Response
   ) {
-    const data = await Order.findOne({where: {id: orderId}, relations: ["details"]})
-    const newData = await Order.save({...data, ...orderData, details})
-    return Responses.sendOK(res, newData);
+    const data = orderService.updateOrder(orderId, orderData, details)
+    return Responses.sendOK(res, data);
   }
 
   @Post("/:orderId/status/update")

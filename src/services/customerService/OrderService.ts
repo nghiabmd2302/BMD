@@ -56,9 +56,9 @@ class OrderService {
     expoToken: string = "",
   ): Promise<any> {
     const moneyTotal = await this.sumArrayValues(details);
-    const addressCityData: AddressCity = await AddressCity.findQuery({where: {id: addressCity}})
+    const addressCityData: AddressCity = await AddressCity.findOne({where: {id: addressCity}})
     const moneyDistance = addressCityData.feeDelivery
-    const {value, type} = await Promotion.findQuery({where: {code: promotionCode}})
+    const {value, type} = await Promotion.findOne({where: {code: promotionCode}})
     let moneyDiscount = 0
     if(type==='PERCENT') {
       moneyDiscount = moneyTotal * value / 100

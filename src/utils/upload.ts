@@ -9,7 +9,6 @@ export const storage = multer.diskStorage({
     const baseUrl = req.baseUrl
     const segments = baseUrl.split("/");
     const pathName = segments[segments.length - 1];
-
     const pathFinal = `./media/${pathName}`
 
     fs.mkdirSync(pathFinal, { recursive: true })

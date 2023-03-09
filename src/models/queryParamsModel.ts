@@ -148,3 +148,8 @@ export class QueryParamsModelOrderSearch {
   @Property()
   to: string;
 }
+
+export class QueryParamsModelDivisionSearch extends QueryParamsModel{
+  @Property()
+  addressCityId: number;
+}

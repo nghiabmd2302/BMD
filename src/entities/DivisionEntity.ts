@@ -1,5 +1,6 @@
 import { Core } from "../core/entity/Core";
-import { Entity, Column } from "typeorm";
+import { Entity, Column, ManyToOne } from "typeorm";
+import { AddressCity } from "./AddressCityEntity";
 @Entity("division")
 export class Division extends Core {
   @Column()
@@ -31,4 +32,7 @@ export class Division extends Core {
 
   @Column()
   isChangedDefaultPassword: boolean;
+
+  @ManyToOne(() => AddressCity, (addressCity) => addressCity.division)
+  addressCity: number;
 }

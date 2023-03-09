@@ -7,6 +7,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Order } from "./OrderEntity";
+import { Division } from "./DivisionEntity";
 
 @Entity("bmd_address_city")
 export class AddressCity extends Core {
@@ -36,4 +37,7 @@ export class AddressCity extends Core {
 
   @OneToMany(() => Order, (order) => order.addressCity)
   orders: Order[];
+
+  @OneToMany(() => Division, (division) => division.addressCity)
+  division: Division[];
 }
