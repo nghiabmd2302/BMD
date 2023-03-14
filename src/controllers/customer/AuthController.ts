@@ -10,7 +10,7 @@ import {
   UseAuth
 } from "@tsed/common";
 import { generateToken } from "../../utils/jwt";
-import { Customer } from "../../entities/CustomerEntity";
+import { Customer } from "../../entities/Customer";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import {
   CustomerInsert,

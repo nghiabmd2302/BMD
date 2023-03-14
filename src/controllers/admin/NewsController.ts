@@ -13,12 +13,12 @@ import {
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { Docs } from "@tsed/swagger";
-import { News } from "../../entities/NewsEntity";
+import { News } from "../../entities/News";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response, Request } from "express";
 import { NewsInsert } from "../../models/NewsCreation";
 import { QueryParamsModel } from "../../models/queryParamsModel";
-import { newsService } from "../../services/adminService/NewsService";
+import { newsService } from "../../services/NewsService";
 import { In } from "typeorm";
 import { MultipartFile } from "@tsed/multipartfiles";
 import { Error } from "../../services/errorService/ErrorService";

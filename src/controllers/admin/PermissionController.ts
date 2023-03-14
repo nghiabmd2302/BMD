@@ -15,9 +15,9 @@ import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express";
 import { QueryParamsModelLessSearch } from "../../models/queryParamsModel";
-import { Permission } from "../../entities/PermissionEntity";
+import { Permission } from "../../entities/Permission";
 import { PermissionInsert } from "../../models/PermissionCreation";
-import { permissionService } from "../../services/adminService/PermissionService";
+import { permissionService } from "../../services/PermissionService";
 
 @Controller("/permission")
 @Docs("/docs_admin")

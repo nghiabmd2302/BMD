@@ -12,12 +12,15 @@ import * as cookieParser from "cookie-parser";
 import * as cors from "cors";
 import * as session from "express-session";
 import * as methodOverride from "method-override";
+const expressWinston = require("express-winston");
 import errorMidlleware from "./middlewares/errorMidlleware";
 const express = require("express");
-import User from "./entities/StaffEntity";
+import User from "./entities/Staff";
 import { fileFilter, storage, upload } from "./utils/upload";
 const dotenv = require("dotenv");
 dotenv.config();
+import { Logger } from "winston";
+import { logger } from "./utils/logger";
 
 export const rootDir = __dirname;
 
@@ -48,13 +51,14 @@ export const rootDir = __dirname;
   //   `${rootDir}/repositories/*{.ts,.js}`,
   //   `${rootDir}/protocols/*{.ts,.js}`
   // ],
+
   passport: {
     userInfoModel: User,
   },
   multer: {
     dest: process.env.DEST_STATIC,
     storage: storage,
-    fileFilter: fileFilter
+    fileFilter: fileFilter,
     // see multer options
   },
   typeorm: [
@@ -114,6 +118,13 @@ export class Server {
       .use(
         bodyParser.urlencoded({
           extended: true,
+        })
+      )
+      .use(
+        expressWinston.logger({
+          winstonInstance: logger,
+          expressFormat: true,
+          colorize: true,
         })
       )
       .use(

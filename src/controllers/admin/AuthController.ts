@@ -10,7 +10,7 @@ import {
   UseAuth
 } from "@tsed/common";
 import { generateToken } from "../../utils/jwt";
-import Staff from "../../entities/StaffEntity";
+import Staff from "../../entities/Staff";
 import { StaffInsert } from "../../models/StaffCreation";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { comparePassword } from "../../utils/password.utils";

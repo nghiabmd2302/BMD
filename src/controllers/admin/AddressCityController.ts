@@ -11,13 +11,13 @@ import {
   UseAuth
 } from "@tsed/common";
 import { VerificationJWT } from "../../middlewares/auth";
-import { AddressCity } from "../../entities/AddressCityEntity";
+import { AddressCity } from "../../entities/AddressCity";
 import { AddressCityInsert } from "../../models/AddressCityCreation";
 import { QueryParamsModel } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express";
-import { addressCityService } from "../../services/commonService/AddressCityService";
+import { addressCityService } from "../../services/AddressCityService";
 
 @Controller("/addressCity")
 @Docs("/docs_admin")

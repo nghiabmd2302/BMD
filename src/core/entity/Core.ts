@@ -1,14 +1,11 @@
-import ErrorHander from "../../middlewares/ErrorHandler";
 import {
   BaseEntity,
   Entity,
-  CreateDateColumn,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
   Column,
-  BeforeUpdate,
   BeforeInsert,
 } from "typeorm";
+const moment = require("moment")
 import { Error } from "../../services/errorService/ErrorService";
 
 @Entity()
@@ -28,16 +25,24 @@ export abstract class Core extends BaseEntity {
 
   @BeforeInsert()
   createTimestamp() {
-    const date = new Date();
-    const milliseconds: number = date.getTime();
+    const milliseconds = moment().unix()
     this.updatedAt = milliseconds;
     this.createdAt = milliseconds;
   }
 
+  static async findOneAndThrow(options: any, id: number = 0): Promise<any> {
+    try {
+      return await super.findOneOrFail(options);
+    } catch (err) {
+      return Error.badRequest(
+        `Không tìm thấy ${this.name} nào tồn tại với id là ${id}`,
+        {}
+      );
+    }
+  }
 
   static save(options?: any): Promise<any> {
-    const date = new Date();
-    const milliseconds: number = date.getTime();
+    const milliseconds = moment().unix()
     options.updatedAt = milliseconds;
     options.createdAt = milliseconds;
     return super.save(options);
@@ -65,11 +70,11 @@ export abstract class Core extends BaseEntity {
   }
 
   static async updateCondition(condition: object, options: any): Promise<any> {
-    const date = new Date();
-    const milliseconds: number = date.getTime();
+    const milliseconds = moment().unix()
     try {
       const data = await super.update(condition, {
-        ...options, updatedAt: milliseconds
+        ...options,
+        updatedAt: milliseconds,
       });
       return data;
     } catch (err) {

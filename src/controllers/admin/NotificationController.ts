@@ -16,8 +16,8 @@ import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express";
 import { QueryParamsModel } from "../../models/queryParamsModel";
 import { NotificationInsert } from "../../models/NotificationCreation";
-import { Notification } from "../../entities/NotificationEntity";
-import { notificationService } from "../../services/adminService/NotificationService";
+import { Notification } from "../../entities/Notification";
+import { notificationService } from "../../services/NotificationService";
 
 @Controller("/notification")
 @Docs("/docs_admin")

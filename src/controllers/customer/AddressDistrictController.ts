@@ -12,7 +12,7 @@ import { QueryParamsModelParentCode } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Response } from "express";
 import { Responses } from "../../services/responseService/ResponseService";
-import { addressDistrictService } from "../../services/commonService/AddressDistrictService";
+import { addressDistrictService } from "../../services/AddressDistrictService";
 
 @Controller("/addressDistrict")
 @Docs("/docs_customer")

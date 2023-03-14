@@ -12,7 +12,7 @@ import {
   EndpointMetadata,
 } from "@tsed/common";
 import { Docs } from "@tsed/swagger";
-import { CoreEntity } from "../../entities/TestEntity";
+import { CoreEntity } from "../../entities/Test";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response, Request } from "express";
 import * as Joi from "joi";

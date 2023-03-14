@@ -1,8 +1,8 @@
 
 import * as jwt from "jsonwebtoken"
-import Staff from "../entities/StaffEntity"
+import Staff from "../entities/Staff"
 import {Res} from "@tsed/common"
-import { Customer } from "../entities/CustomerEntity"
+import { Customer } from "../entities/Customer"
 
 export const generateToken = async (staff: Partial<Staff> | Partial<Customer>, res: Res) => {
     const token = jwt.sign({staffId: staff.id, role: staff.code}, process.env.JWT_SECRET, {expiresIn: `${process.env.JWT_EXPIRESIN}`})

@@ -12,12 +12,12 @@ import {
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { GradeInsert } from "../../models/GradeCreation";
-import { Grade } from "../../entities/GradeEntity";
+import { Grade } from "../../entities/Grade";
 import { QueryParamsModelLessSearch } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express"
-import { gradeService } from "../../services/adminService/GradeService";
+import { gradeService } from "../../services/GradeService";
 
 @Controller("/grade")
 @Docs("/docs_admin")

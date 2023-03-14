@@ -11,17 +11,17 @@ import {
   UseAuth
 } from "@tsed/common";
 
-import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
+import { VerificationJWT } from "../../middlewares/auth";
 import { BookInsert } from "../../models/BookCreation";
 import { AttributeInsert } from "../../models/AttributeCreation";
 import { GalleryInsert } from "../../models/GalleryCreation";
-import { QueryParamsModel, QueryParamsModelBookSearch } from "../../models/queryParamsModel";
-import { Book } from "../../entities/BookEntity";
+import { QueryParamsModelBookSearch } from "../../models/queryParamsModel";
+import { Book } from "../../entities/Book";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response} from "express"
 import { In } from "typeorm";
-import { bookService } from "../../services/adminService/BookService";
+import { bookService } from "../../services/BookService";
 
 interface QueryBookIds {
   bookIds: number;
@@ -54,8 +54,8 @@ export class BookController {
     @BodyParams("attributes", AttributeInsert) attributes: AttributeInsert[],
     @Res() res: Response
   ) {
-    const bookDataSave = await Book.save({...bookData, category: categoryId, grade: gradeId, cover: coverId, author: authorId, publisher: publisherId, galleries, attributes})
-    return Responses.sendOK(res, bookDataSave)
+    const data = await bookService.createBook(bookData, categoryId, gradeId, coverId, authorId, publisherId, galleries,attributes)
+    return Responses.sendOK(res, data);
   }
 
   @Post("/:bookId/update")

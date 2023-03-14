@@ -12,13 +12,13 @@ import {
   UseAuth
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
-import { Banner } from "../../entities/BannerEntity";
+import { Banner } from "../../entities/Banner";
 import { BannerInsert } from "../../models/BannerCreation";
 import { QueryParamsModelLessSearch } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response, Request } from "express";
-import { bannerService } from "../../services/commonService/BannerService";
+import { bannerService } from "../../services/BannerService";
 import { MultipartFile } from "@tsed/multipartfiles";
 import { Error } from "../../services/errorService/ErrorService";
 import { upload } from "../../utils/upload";
@@ -44,8 +44,9 @@ export class BannerController {
     @BodyParams("banner") bannerData: BannerInsert,
     @Res() res: Response
   ) {
-    await Banner.save({ ...bannerData });
-    return Responses.sendOK(res, bannerData);
+    const banner = await bannerData.toBanner() 
+    const data = await Banner.save(banner);
+    return Responses.sendOK(res, data);
   }
 
   @Post("/:bannerId/update")
@@ -56,7 +57,8 @@ export class BannerController {
     @PathParams("bannerId") bannerId: number,
     @Res() res: Response
   ) {
-    await Banner.updateCondition({ id: bannerId }, { ...bannerData });
+    const banner = await bannerData.toBanner()
+    const data = await Banner.updateCondition({ id: bannerId }, { ...banner });
     return Responses.sendOK(res, {});
   }
 

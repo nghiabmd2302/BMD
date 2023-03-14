@@ -1,30 +1,39 @@
 import "reflect-metadata";
-import Staff from "../entities/StaffEntity";
+import Staff from "../entities/Staff";
 import { DataSource } from "typeorm";
-import { AddressCity } from "../entities/AddressCityEntity";
-import { AddressDistrict } from "../entities/AddressDistrictEntity";
-import { AddressWard } from "../entities/AddressWardEntity";
-import { Author } from "../entities/AuthorEntity";
-import { Banner } from "../entities/BannerEntity";
-import { BannerTeacher } from "../entities/BannerTeacherEntity";
-import { BannerWeb } from "../entities/BannerWebEntity";
-import { Category } from "../entities/CategoryEntity";
-import { Cover } from "../entities/CoverEntity";
-import { Publisher } from "../entities/PublisherEntity";
-import { Grade } from "../entities/GradeEntity";
-import { Book } from "../entities/BookEntity";
-import { Customer } from "../entities/CustomerEntity";
-import { Gallery } from "../entities/GalleryEntity";
-import { Attribute } from "../entities/AttributeEntity";
-import { Order } from "../entities/OrderEntity";
-import { OrderDetail } from "../entities/OrderDetailEntity";
-import { CoreEntity } from "../entities/TestEntity";
-import { Promotion } from "../entities/PromotionEntity";
-import { News } from "../entities/NewsEntity";
-import { Notification } from "../entities/NotificationEntity";
-import { Permission } from "../entities/PermissionEntity";
-import { Division } from "../entities/DivisionEntity";
-import { Media } from "../entities/MediaEntity";
+import { AddressCity } from "../entities/AddressCity";
+import { AddressDistrict } from "../entities/AddressDistrict";
+import { AddressWard } from "../entities/AddressWard";
+import { Author } from "../entities/Author";
+import { Banner } from "../entities/Banner";
+import { BannerTeacher } from "../entities/BannerTeacher";
+import { BannerWeb } from "../entities/BannerWeb";
+import { Category } from "../entities/Category";
+import { Cover } from "../entities/Cover";
+import { Publisher } from "../entities/Publisher";
+import { Grade } from "../entities/Grade";
+import { Book } from "../entities/Book";
+import { Customer } from "../entities/Customer";
+import { Gallery } from "../entities/Gallery";
+import { Attribute } from "../entities/Attribute";
+import { Order } from "../entities/Order";
+import { OrderDetail } from "../entities/OrderDetail";
+import { CoreEntity } from "../entities/Test";
+import { Promotion } from "../entities/Promotion";
+import { News } from "../entities/News";
+import { Notification } from "../entities/Notification";
+import { Permission } from "../entities/Permission";
+import { Division } from "../entities/Division";
+import { Media } from "../entities/Media";
+import { School } from "../entities/School";
+import { Classroom } from "../entities/Classroom";
+import { Teacher } from "../entities/Teacher";
+import { Configuration } from "../entities/Configuration";
+import { Role } from "../entities/Role";
+
+
+
+
 
 
 const AppDataSource = new DataSource({
@@ -40,6 +49,11 @@ const AppDataSource = new DataSource({
     duration: 30000,
   },
   entities: [
+    Role,
+    Configuration,
+    Teacher,
+    Classroom,
+    School,
     Staff,
     AddressCity,
     Category,

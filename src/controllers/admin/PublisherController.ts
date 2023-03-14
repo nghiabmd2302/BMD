@@ -12,13 +12,13 @@ import {
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { PublisherInsert } from "../../models/PublisherCreation";
-import { Publisher } from "../../entities/PublisherEntity";
+import { Publisher } from "../../entities/Publisher";
 import { QueryParamsModel } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Like } from "typeorm";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response} from "express"
-import { publisherService } from "../../services/adminService/PublisherService";
+import { publisherService } from "../../services/PublisherService";
 
 @Controller("/publisher")
 @Docs("/docs_admin")

@@ -11,8 +11,8 @@ import {
 import { Request } from "express";
 
 import * as jwt from "jsonwebtoken";
-import { Customer } from "../entities/CustomerEntity";
-import Staff from "../entities/StaffEntity";
+import { Customer } from "../entities/Customer";
+import Staff from "../entities/Staff";
 import { Error } from "../services/errorService/ErrorService";
 
 interface databaseLog {
@@ -76,7 +76,6 @@ export class VerificationJWT{
     @Req() request: Request,
     @HeaderParams("token") token: string
   ) {
-    console.log('123123')
     //get role from router
     //@ts-ignore
     const baseUrl = request.baseUrl;

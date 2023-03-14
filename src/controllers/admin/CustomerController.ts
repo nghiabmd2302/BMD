@@ -11,14 +11,14 @@ import {
   UseAuth
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
-import { Customer } from "../../entities/CustomerEntity";
+import { Customer } from "../../entities/Customer";
 import { CustomerInsert, CustomerUpdate } from "../../models/CustomerCreation";
 import { hashPassword } from "../../utils/password.utils";
 import { Docs } from "@tsed/swagger";
 import { Response} from "express"
 import { Responses } from "../../services/responseService/ResponseService";
 import { QueryParamsModelCustomerSearch } from "../../models/queryParamsModel";
-import { customerService } from "../../services/adminService/CustomerService";
+import { customerService } from "../../services/CustomerService";
 
 @Controller("/customer")
 @Docs("/docs_admin")

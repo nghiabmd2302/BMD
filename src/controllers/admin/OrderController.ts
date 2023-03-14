@@ -12,12 +12,12 @@ import {
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { OrderInsert } from "../../models/OrderCreation";
-import { Order } from "../../entities/OrderEntity";
+import { Order } from "../../entities/Order";
 import { QueryParamsModelOrderSearch } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express";
-import { orderService } from "../../services/adminService/OrderService";
+import { orderService } from "../../services/OrderService";
 import { OrderDetailInsert } from "../../models/OrderDetailCreation";
 
 @Controller("/order")
@@ -30,7 +30,7 @@ export class OrderController {
     @QueryParams() query: QueryParamsModelOrderSearch,
     @Res() res: Response
   ) {
-    const OrderData: Order[] = await orderService.getQuery(query);
+    const OrderData: Order[] = await orderService.getQueryAdmin(query);
     return Responses.sendOK(res, OrderData);
   }
 
@@ -43,7 +43,7 @@ export class OrderController {
     @BodyParams("details", OrderDetailInsert) details: OrderDetailInsert[],
     @Res() res: Response
   ) {
-    const data = orderService.updateOrder(orderId, orderData, details)
+    const data = await orderService.updateOrder(orderId, orderData, details)
     return Responses.sendOK(res, data);
   }
 

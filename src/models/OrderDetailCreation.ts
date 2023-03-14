@@ -1,4 +1,5 @@
 import { Default, Property} from "@tsed/common";
+import { OrderDetail } from "../entities/OrderDetail";
 export class OrderDetailInsert{
     
     @Property()
@@ -14,10 +15,15 @@ export class OrderDetailInsert{
     attributeId2: number
 
     @Property()
-    book: number
+    bookId: number
 
-    finalPrice: number
-
-    originPrice: number
+    async toOrderDetail () {
+        const orderDetail = new OrderDetail()
+        orderDetail.quantity = this.quantity
+        orderDetail.attributeId1 = this.attributeId1
+        orderDetail.attributeId2 = this.attributeId2
+        await orderDetail.assignBook(this.bookId)
+        return orderDetail
+    }
 
 }

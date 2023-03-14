@@ -10,17 +10,14 @@ import {
   Res,
   UseAuth,
 } from "@tsed/common";
-import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
-import { GradeInsert } from "../../models/GradeCreation";
-import { Grade } from "../../entities/GradeEntity";
+import { VerificationJWT } from "../../middlewares/auth";
 import { QueryParamsModelDivisionSearch } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express";
-import { gradeService } from "../../services/adminService/GradeService";
-import { DivisionInsert } from "../../models/DivisionCreation";
-import { Division } from "../../entities/DivisionEntity";
-import { divisionService } from "../../services/adminService/DivisionService";
+import { DivisionInsert, DivisionUpdate } from "../../models/DivisionCreation";
+import { Division } from "../../entities/Division";
+import { divisionService } from "../../services/DivisionService";
 
 @Controller("/division")
 @Docs("/docs_admin")
@@ -44,42 +41,44 @@ export class DivisionController {
     @BodyParams("addressCityId") addressCity: number,
     @Res() res: Response
   ) {
-    const data = await Division.save({ ...divisionData, addressCity });
+    const data = await divisionService.create(divisionData, addressCity)
     return Responses.sendOK(res, data);
   }
 
-  @Post("/")
+  @Post("/:divisionId/update")
   @UseAuth(VerificationJWT)
   async update(
     @HeaderParams("token") token: String,
-    @BodyParams("division") divisionData: DivisionInsert,
-    @BodyParams("addressCityId") addressCity: number,
+    @BodyParams("division") divisionData: DivisionUpdate,
+    @BodyParams("addressCityId") addressCityId: number,
+    @PathParams("divisionId") divisionId: number,
     @Res() res: Response
   ) {
-    const data = await Division.save({ ...divisionData, addressCity });
+    const data = await divisionService.update(divisionData, addressCityId, divisionId)
     return Responses.sendOK(res, data);
   }
 
-  // @Post("/:gradeId/update")
-  // @UseAuth(VerificationJWT)
-  // async update(
-  //   @BodyParams("grade") gradeData: GradeInsert,
-  //   @HeaderParams("token") token: String,
-  //   @PathParams("gradeId") gradeId: number,
-  //   @Res() res: Response
-  // ) {
-  //   await Grade.updateCondition({id: gradeId}, gradeData)
-  //   return Responses.resOk(res, {});
-  // }
+  @Post("/:divisionId/delete")
+  @UseAuth(VerificationJWT)
+  async delete(
+    @HeaderParams("token") token: String,
+    @PathParams("divisionId") divisionId: number,
+    @Res() res: Response
+  ) {
+    await Division.updateCondition({id: divisionId}, {isDeleted: true})
+    return Responses.sendOK(res, {});
+  }
 
-  // @Post("/:gradeId/delete")
-  // @UseAuth(VerificationJWT)
-  // async delete(
-  //   @HeaderParams("token") token: String,
-  //   @PathParams("gradeId") gradeId: number,
-  //   @Res() res: Response
-  // ) {
-  //   await Grade.updateCondition({id: gradeId}, {idDeleted: true})
-  //   return Responses.resOk(res, {});
-  // }
+  @Post("/:divisionId/password/update")
+  @UseAuth(VerificationJWT)
+  async updatePassword(
+    @HeaderParams("token") token: String,
+    @BodyParams("password") password: string,
+    @PathParams("divisionId") divisionId: number,
+    @Res() res: Response
+  ) {
+    const data = await divisionService.updatePassword(password, divisionId)
+    return Responses.sendOK(res, data);
+  }
+
 }

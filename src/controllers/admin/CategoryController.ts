@@ -12,13 +12,13 @@ import {
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { CategoryInsert } from "../../models/CategoryCreation";
-import { Category } from "../../entities/CategoryEntity";
+import { Category } from "../../entities/Category";
 import { QueryParamsModelMoreSearch } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Like } from "typeorm";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response } from "express";
-import { categoryService } from "../../services/adminService/CategoryService";
+import { categoryService } from "../../services/CategoryService";
 
 @Controller("/category")
 @Docs("/docs_admin")

@@ -9,6 +9,15 @@ export class ResponseService {
             status: true
         })
     }
+
+    sendError (res: Res, data: any = {}, message: string = "") {
+        // @ts-ignore
+        res.status(400).json({
+            message,
+            data,
+            status: false
+        })
+    }
 }
 
 export const Responses = new ResponseService()

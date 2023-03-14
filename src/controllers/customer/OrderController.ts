@@ -15,10 +15,10 @@ import { VerificationJWT } from "../../middlewares/auth";
 import { Docs } from "@tsed/swagger";
 import { OrderInsert } from "../../models/OrderCreation";
 import { OrderDetailInsert } from "../../models/OrderDetailCreation";
-import { Order } from "../../entities/OrderEntity";
+import { Order } from "../../entities/Order";
 import { Response, Request } from "express";
 import { Responses } from "../../services/responseService/ResponseService";
-import { orderService } from "../../services/customerService/OrderService";
+import { orderService } from "../../services/OrderService";
 import { QueryParamsModelLessSearch } from "../../models/queryParamsModel";
 
 @Controller("/order")
@@ -51,7 +51,7 @@ export class OrderController {
     @BodyParams("addressWardId") addressWard: number,
     @Res() res: Response
   ) {
-    const data = await orderService.addNewOrder(orderData, details, promotionCode, addressCity, addressDistrict, addressWard, customer, expoToken)
+    const data = await orderService.createOrder(orderData, details, addressCity, addressDistrict, addressWard, customer, promotionCode, expoToken)
     return Responses.sendOK(res, data);
   }
 
@@ -83,7 +83,7 @@ export class OrderController {
   ) {
     // @ts-ignore
     const customer = request.user.id;
-    const data = await orderService.addNewOrder(orderData, details, promotionCode, addressCity, addressDistrict, addressWard, customer)
+    const data = await orderService.createOrder(orderData, details, addressCity, addressDistrict, addressWard, customer, promotionCode)
     return Responses.sendOK(res, data);
   }
   

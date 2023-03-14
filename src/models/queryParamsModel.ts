@@ -10,7 +10,7 @@ export class QueryParamsModel {
   search: string;
 }
 
-export class QueryParamsModelParentCode{
+export class QueryParamsModelParentCode {
   @Property()
   limit: number;
 
@@ -72,7 +72,7 @@ export class QueryParamsModelBookSearch {
   categoryId: number;
 
   @Property()
-  sortPromotion: boolean
+  sortPromotion: boolean;
 
   @Property()
   coverId: number;
@@ -84,17 +84,16 @@ export class QueryParamsModelBookSearch {
   authorId: number;
 
   @Property()
-  isHighlight: boolean
+  isHighlight: boolean;
 
   @Property()
-  isPreOrder: boolean
+  isPreOrder: boolean;
 
   @Property()
-  isOutOfStock: boolean
+  isOutOfStock: boolean;
 
   @Property()
-  type: string
-
+  type: string;
 }
 
 export class QueryParamsModelCustomerSearch {
@@ -108,16 +107,16 @@ export class QueryParamsModelCustomerSearch {
   search: string;
 
   @Property()
-  schoolId: number
+  schoolId: number;
 
   @Property()
-  divisionId: number
+  divisionId: number;
 
   @Property()
-  classroomId: number
+  classroomId: number;
 
   @Property()
-  isDeleted: boolean
+  isDeleted: boolean;
 }
 
 export class QueryParamsModelOrderSearch {
@@ -149,7 +148,34 @@ export class QueryParamsModelOrderSearch {
   to: string;
 }
 
-export class QueryParamsModelDivisionSearch extends QueryParamsModel{
+export class QueryParamsModelDivisionSearch extends QueryParamsModel {
   @Property()
   addressCityId: number;
+}
+
+export class QueryParamsModelSchoolSearch extends QueryParamsModel {
+  @Property()
+  addressCityId: number;
+
+  @Property()
+  divisionId: number;
+
+  @Property()
+  addressDistrictId: number;
+}
+
+export class QueryParamsModelClassroomSearch extends QueryParamsModel {
+  @Property()
+  schoolId: number;
+
+  @Property()
+  gradeId: number;
+}
+
+export class QueryParamsModelTeacherSearch extends QueryParamsModel {
+  @Property()
+  schoolId: number;
+
+  @Property()
+  classroomId: number;
 }

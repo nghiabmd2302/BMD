@@ -11,13 +11,13 @@ import {
   UseAuth
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
-import { BannerTeacher } from "../../entities/BannerTeacherEntity";
+import { BannerTeacher } from "../../entities/BannerTeacher";
 import { BannerTeacherInsert } from "../../models/BannerTeacherCreation";
 import { QueryParamsModelLessSearch } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Response} from "express"
 import { Responses } from "../../services/responseService/ResponseService";
-import { bannerTeacherService } from "../../services/commonService/BannerTeacherService";
+import { bannerTeacherService } from "../../services/BannerTeacherService";
 
 @Controller("/bannerTeacher")
 @Docs("/docs_admin")
@@ -40,8 +40,9 @@ export class BannerTeacherController {
     @BodyParams("bannerTeacher") bannerTeacherData: BannerTeacherInsert,
     @Res() res: Response
   ) {
-    await BannerTeacher.save({...bannerTeacherData})
-    return Responses.sendOK(res, bannerTeacherData);
+    const bannerTeacher = await bannerTeacherData.toBannerTeacher() 
+    const data = await BannerTeacher.save(bannerTeacher);
+    return Responses.sendOK(res, data);
   }
 
   @Post("/:bannerTeacherId/update")

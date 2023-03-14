@@ -11,13 +11,13 @@ import {
   UseAuth
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
-import { BannerWeb } from "../../entities/BannerWebEntity";
+import { BannerWeb } from "../../entities/BannerWeb";
 import { BannerWebInsert } from "../../models/BannerWebCreation";
 import { QueryParamsModelLessSearch } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Response} from "express"
 import { Responses } from "../../services/responseService/ResponseService";
-import { bannerWebService } from "../../services/commonService/BannerWebService";
+import { bannerWebService } from "../../services/BannerWebService";
 
 @Controller("/bannerWeb")
 @Docs("/docs_admin")

@@ -11,13 +11,13 @@ import {
   UseAuth
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
-import { Cover } from "../../entities/CoverEntity";
+import { Cover } from "../../entities/Cover";
 import { CoverInsert } from "../../models/CoverCreation";
 import { QueryParamsModel } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response} from "express"
-import { coverService } from "../../services/adminService/CoverService";
+import { coverService } from "../../services/CoverService";
 
 @Controller("/cover")
 @Docs("/docs_admin")

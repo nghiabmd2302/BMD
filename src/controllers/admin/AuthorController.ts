@@ -12,12 +12,12 @@ import {
 } from "@tsed/common";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { AuthorInsert } from "../../models/AuthorCreation";
-import { Author } from "../../entities/AuthorEntity";
+import { Author } from "../../entities/Author";
 import { QueryParamsModel } from "../../models/queryParamsModel";
 import { Docs } from "@tsed/swagger";
 import {Response} from "express"
 import { Responses } from "../../services/responseService/ResponseService";
-import { authorService } from "../../services/commonService/AuthorService";
+import { authorService } from "../../services/AuthorService";
 
 @Controller("/author")
 @Docs("/docs_admin")
