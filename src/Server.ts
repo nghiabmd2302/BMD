@@ -15,12 +15,12 @@ import * as methodOverride from "method-override";
 const expressWinston = require("express-winston");
 import errorMidlleware from "./middlewares/errorMidlleware";
 const express = require("express");
-import User from "./entities/Staff";
-import { fileFilter, storage, upload } from "./utils/upload";
+import { fileFilter, storage } from "./utils/upload";
 const dotenv = require("dotenv");
 dotenv.config();
-import { Logger } from "winston";
 import { logger } from "./utils/logger";
+const passport = require("passport")
+const FacebookStrategy = require("passport-facebook")
 
 export const rootDir = __dirname;
 
@@ -53,7 +53,6 @@ export const rootDir = __dirname;
   // ],
 
   passport: {
-    userInfoModel: User,
   },
   multer: {
     dest: process.env.DEST_STATIC,
@@ -71,7 +70,7 @@ export const rootDir = __dirname;
       database: "tesst",
       synchronize: true,
       logging: false,
-      entities: [User],
+      entities: [],
     },
   ],
   ajv: {},

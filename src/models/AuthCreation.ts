@@ -1,7 +1,16 @@
 import {Required, Property} from "@tsed/common";
-import {Column} from "typeorm";
 
-export class StaffUpdate {
+export class AuthInsert{
+  @Required()
+  username: string;
+
+  @Required()
+  password: string;
+
+}
+
+
+export class AuthUpdate {
   @Property()
   description: string;
 
@@ -20,7 +29,7 @@ export class StaffUpdate {
 
 }
 
-export class StaffPassword {
+export class AuthPassword {
     @Property()
     oldPassword: string
 

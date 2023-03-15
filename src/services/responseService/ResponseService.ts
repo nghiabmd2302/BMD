@@ -12,7 +12,7 @@ export class ResponseService {
 
     sendError (res: Res, data: any = {}, message: string = "") {
         // @ts-ignore
-        res.status(400).json({
+        res.status(200).json({
             message,
             data,
             status: false

@@ -10,14 +10,14 @@ import {
   UseAuth
 } from "@tsed/common";
 import { generateToken } from "../../utils/jwt";
-import Staff from "../../entities/Staff";
-import { StaffInsert } from "../../models/StaffCreation";
+import {Staff} from "../../entities/Staff";
+import { AuthInsert } from "../../models/AuthCreation";
 import { CustomAuthMiddleware, VerificationJWT } from "../../middlewares/auth";
 import { comparePassword } from "../../utils/password.utils";
 import { Docs } from "@tsed/swagger";
 import { Responses } from "../../services/responseService/ResponseService";
 import { Response, Request } from "express";
-import { StaffPassword, StaffUpdate } from "../../models/StaffUpdate";
+import { AuthPassword, AuthUpdate } from "../../models/AuthCreation";
 import { Error } from "../../services/errorService/ErrorService";
 import { hashPassword } from "../../utils/password.utils";
 import { Validator } from "../../middlewares/validate";
@@ -41,14 +41,16 @@ export class AuthController {
     })
   )
   async login(
-    @BodyParams() data: StaffInsert,
+    @BodyParams() data: AuthInsert,
     @Req() req: Req,
     @Res() res: Res
   ) {
     const staff: Staff = await Staff.findQuery({
-      select: ["username", "password", "code", "id"],
+      relations: ["role"],
+      select: ["username", "password", "id", "role.name"],
       where: { username: data.username },
-    });
+    })
+    console.log(staff)
 
     await comparePassword(data.password, staff.password);
 
@@ -71,7 +73,7 @@ export class AuthController {
   @Post("/profile")
   @UseAuth(VerificationJWT)
   async update(
-    @BodyParams("staff") staff: StaffUpdate,
+    @BodyParams("staff") staff: AuthUpdate,
     @HeaderParams("token") token: string,
     @Req() request: Request,
     @Res() res: Response
@@ -84,7 +86,7 @@ export class AuthController {
   @Post("/profile/password/update")
   @UseAuth(VerificationJWT)
   async passwordUpdate(
-    @BodyParams() staffPassword: StaffPassword,
+    @BodyParams() staffPassword: AuthPassword,
     @HeaderParams("token") token: string,
     @Req() request: Request,
     @Res() res: Response

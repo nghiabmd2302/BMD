@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import Staff from "../entities/Staff";
+import {Staff} from "../entities/Staff";
 import { DataSource } from "typeorm";
 import { AddressCity } from "../entities/AddressCity";
 import { AddressDistrict } from "../entities/AddressDistrict";
@@ -31,11 +31,6 @@ import { Teacher } from "../entities/Teacher";
 import { Configuration } from "../entities/Configuration";
 import { Role } from "../entities/Role";
 
-
-
-
-
-
 const AppDataSource = new DataSource({
   type: "mysql",
   host: "localhost",
@@ -50,11 +45,11 @@ const AppDataSource = new DataSource({
   },
   entities: [
     Role,
+    Staff,
     Configuration,
     Teacher,
     Classroom,
     School,
-    Staff,
     AddressCity,
     Category,
     AddressDistrict,

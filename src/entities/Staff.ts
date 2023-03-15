@@ -1,50 +1,46 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
-import { Format } from "@tsed/common";
 import { Core } from "../core/entity/Core";
-
-enum Role {
-  ADMIN = "admin"
-}
+import { Entity, Column, ManyToOne} from "typeorm";
+import { Role } from "./Role";
 
 @Entity("staff")
-export default class Staff extends Core{
-
-  @Column({type: "enum", default: Role.ADMIN, enum: Role})
-  code: string;
-
-  @Column()
-  dob: string;
+export class Staff extends Core {
+  
 
   @Column()
   phone: string;
-
+  
   @Column()
   name: string;
-
-  @Column()
-  address: string;
-
+  
   @Column()
   email: string;
-
-  @Column()
-  gender: string;
-
+  
   @Column()
   description: string;
-
+  
   @Column()
   avatar: string;
-
+  
   @Column()
   isBlock: boolean;
-
-  @Column({ type: Boolean, default: false })
-  isDeleted: boolean;
-
+  
   @Column()
   username: string;
-
+  
   @Column({ select: false })
   password: string;
+  
+  @Column()
+  isSupperAdmin: boolean;
+  
+  @Column()
+  updatePasswordAt: number;
+  
+  @ManyToOne(() => Role, (role) => role.staffs)
+  role: Role;
+  
+  async assignRole(roleId: number) {
+    this.role = await Role.findOneAndThrow({ where: { id: roleId } }, roleId);
+  }
 }
+

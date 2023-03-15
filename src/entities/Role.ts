@@ -1,15 +1,30 @@
 import { Core } from "../core/entity/Core";
-import { Entity, Column, OneToMany, ManyToOne, ManyToMany, JoinTable } from "typeorm";
+import {
+  Entity,
+  Column,
+  OneToMany,
+  ManyToOne,
+  ManyToMany,
+  JoinTable,
+  JoinColumn,
+} from "typeorm";
 import { Permission } from "./Permission";
+import {Staff} from "./Staff";
 
 @Entity("role")
 export class Role extends Core {
-    @Column()
-    name: string
+  @Column()
+  name: string;
 
-    @Column()
-    description: string
+  @Column()
+  description: string;
+  
+  @OneToMany(() => Staff, (staff) => staff.role)
+  staffs: Staff[]
 
-    @OneToMany(() => Permission, (permissions) => permissions.role)
-    permissions: Permission[]
+  @ManyToMany(() => Permission)
+  @JoinTable()
+  permissions: Permission[]
+
+
 }

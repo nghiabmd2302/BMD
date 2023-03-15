@@ -12,7 +12,7 @@ import { Request } from "express";
 
 import * as jwt from "jsonwebtoken";
 import { Customer } from "../entities/Customer";
-import Staff from "../entities/Staff";
+import {Staff} from "../entities/Staff";
 import { Error } from "../services/errorService/ErrorService";
 
 interface databaseLog {
@@ -36,6 +36,7 @@ export class CustomAuthMiddleware implements IMiddleware {
     console.log(role);
 
     try {
+      //@ts-ignore
       const dbLog: databaseLog = await jwt.verify(
         token,
         process.env.JWT_SECRET
@@ -83,6 +84,7 @@ export class VerificationJWT{
     const role = segments[2];
 
     //get database log 
+    //@ts-ignore
     const dbLog: databaseLog = await jwt.verify(token, process.env.JWT_SECRET);
     if (role !== dbLog.role) {
       throw Error.badRequest("Xác thực không hợp lệ!", {});

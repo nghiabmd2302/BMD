@@ -1,4 +1,5 @@
 import { Property } from "@tsed/common";
+import { Customer } from "../entities/Customer";
 
 export class CustomerInsert {
   @Property()
@@ -24,8 +25,46 @@ export class CustomerInsert {
 
   @Property()
   gender: string;
+
+  toCustomer() {
+    const customer = new Customer()
+    customer.username = this.username
+    customer.dob =this.dob
+    customer.password = this.password
+    customer.phone = this.phone
+    customer.name = this.name
+    customer.email = this.email
+    customer.address = this.address
+    customer.gender = this.gender
+    return customer
+  }
 }
-export class CustomerUpdate extends CustomerInsert {
+export class CustomerUpdate {
+
+  @Property()
+  username: string;
+
+  @Property()
+  password: string;
+
+  @Property()
+  dob: string;
+
+  @Property()
+  phone: string;
+
+  @Property()
+  name: string;
+
+  @Property()
+  email: string;
+
+  @Property()
+  address: string;
+
+  @Property()
+  gender: string;
+
   @Property()
   expoToken: string;
 
@@ -43,9 +82,6 @@ export class CustomerUpdate extends CustomerInsert {
 
   @Property()
   avatar: string;
-
-  @Property()
-  username: string;
 
   @Property()
   forgotCode: string;
@@ -99,6 +135,7 @@ export class CustomerPassword {
 
   @Property()
   newPassword: string;
+
 }
 
 export class CustomerLogin {
